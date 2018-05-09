@@ -10,7 +10,7 @@ body,td,th,p{
 body {
 	background-color: #fdfdfd;
 	margin: 0;
-	position:relative;
+  position:relative;
 }
 ul, li {
 	font-family: Arial, Helvetica, sans-serif;
@@ -48,12 +48,14 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
   text-align: center;
   text-transform: uppercase;
 }
+
 /* ====================== Navigation ====================== */
 nav {
-  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  text-align: center;
   height: 80px;
   background-color: #252831;
-  text-align:center;
 }
 nav h1 {
   margin: auto;
@@ -66,17 +68,19 @@ nav h1 a {
   text-transform: uppercase;
 }
 #breadcrumb {
-    padding: 10px 40px 16px;
-    list-style: none;
-    background-color: #eee;
-    font-size: 17px;
-    margin: 0;
-    width: calc(50% - 80px);
+  display: grid;
+  grid-template-columns: 1fr;
+  padding: 10px 40px 16px;
+  list-style: none;
+  background-color: #eee;
+  font-size: 17px;
+  margin: 0;
+  width: calc(50% - 80px);
 }
 
 /* Display list items side by side */
 #breadcrumb li {
-    display: inline;
+  display: inline;
 }
 
 /* Add a slash symbol (/) before/behind each list item */
@@ -103,14 +107,18 @@ nav h1 a {
   width: 100%;
   background-color: #ccc;
 }
+
 /* ====================== Restaurant Filtering ====================== */
 .filter-options {
+  display: grid;
   width: 100%;
-  height: 50px;
+  height: auto;
   background-color: #3397DB;
-  align-items: center;
+  justify-content: center;
+  padding: .5rem 0 .5rem;
 }
 .filter-options h2 {
+  padding: 1rem 0 .5rem;
   color: white;
   font-size: 1rem;
   font-weight: normal;
@@ -183,6 +191,7 @@ nav h1 a {
 }
 
 /* ====================== Restaurant Details ====================== */
+
 .inside header {
   position: fixed;
   top: 0;
@@ -272,4 +281,13 @@ nav h1 a {
 }
 #restaurant-hours td {
   color: #666;
+}
+
+/* ====================== Media Quaries ====================== */
+
+@media screen and (min-width: 500px) {  
+  .filter-options h2 {
+    grid-column: span 2;
+
+  }
 }
