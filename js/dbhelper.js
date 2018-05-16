@@ -145,6 +145,10 @@ class DBHelper {
   static urlForRestaurant(restaurant) {
     return (`./restaurant.html?id=${restaurant.id}`);
   }
+  static ariaForRestaurant(restaurant) {
+    // console.log (`${restaurant.name}`);
+    return (`${restaurant.name}`);
+  }
 
   /**
    * Restaurant image URL.
@@ -153,7 +157,7 @@ class DBHelper {
     return (`/img/${restaurant.photograph}`);
   }
   static imageALTForRestaurant(restaurant) {
-    return (`alt="${restaurant.alt}"`);
+    return (`${restaurant.alt}`);
   }
   
 

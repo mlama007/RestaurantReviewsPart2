@@ -157,8 +157,10 @@ createRestaurantHTML = (restaurant) => {
   li.append(address);
 
   const more = document.createElement('a');
-  more.innerHTML = 'View Details';
+  more.name = DBHelper.ariaForRestaurant(restaurant);
+  more.innerHTML = '<span class= "hidden">'+ more.name+ '</span>' + 'View Details';
   more.href = DBHelper.urlForRestaurant(restaurant);
+  
   li.append(more)
 
   return li
@@ -176,4 +178,15 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     });
     self.markers.push(marker);
   });
+}
+
+if ('serviceWorker' in navigator){
+  navigator.serviceWorker
+    .register('./sw.js', { scope: "./" })
+    .then(function(registration) {
+      console.log('Registration worked!', registration);
+    })
+    .catch(function(err) {
+      console.log('Registration failed!', err);
+    })
 }
