@@ -213,14 +213,6 @@ nav h1 a {
 
 #restaurant-container{
   justify-content: center;
-  /* grid-column: span 2; */
-  /* display: grid; */
-}
-
-.inside #map-container {
-  /* background: blue none repeat scroll 0 0;
-  right: 0;
-  top: 80px; */
 }
 
 .inside #map {
