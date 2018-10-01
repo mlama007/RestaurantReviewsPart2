@@ -40,7 +40,7 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
   min-height: 100%;
 }
 #footer {
-  background-color: #444;
+  background-color: #252831;
   color: #aaa;
   font-size: 8pt;
   letter-spacing: 1px;
@@ -118,7 +118,7 @@ nav h1 a {
   display: grid;
   width: 100%;
   height: auto;
-  background-color: #3397DB;
+  background-color: #00497b;
   justify-content: center;
   padding: .5rem 0 .5rem;
 }
@@ -144,7 +144,7 @@ nav h1 a {
 
 /* ====================== Restaurant Listing ====================== */
 #restaurants-list {
-  background-color: #f3f3f3;
+  background-color: #eee;;
   list-style: outside none none;
   margin: 0;
   padding: 30px 15px 60px;
@@ -155,13 +155,12 @@ nav h1 a {
 }
 #restaurants-list li {
   background-color: #fff;
-  border: 2px solid #ccc;
+  border: 2px solid #00497f;
+  border-radius: 20px;
   font-family: Arial,sans-serif;
-  /* margin: 15px; */
   min-height: 380px;
   padding: 0 30px 25px;
   text-align: left;
-  width: 400px;  
 }
 #restaurants-list .restaurant-img {
   background-color: #ccc;
@@ -186,13 +185,14 @@ nav h1 a {
   font-size: 11pt;
 }
 #restaurants-list li a {
-  background-color: orange;
-  border-bottom: 3px solid #eee;
-  color: #fff;
+  background-color: black;
+  box-shadow: -3px 5px 4px #ccc;
+  color: orange;
   display: inline-block;
   font-size: 10pt;
   margin: 15px 0 0;
-  padding: 8px 30px 10px;
+  padding: 8px 18px 10px;
+  border-radius: 10px;
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
@@ -303,11 +303,11 @@ nav h1 a {
 
 @media screen and (min-width: 750px) {  
   #restaurants-list {
-    padding: 30px 15px 60px;
+    /* padding: 30px 15px 60px; */
     grid-template-columns: repeat(auto-fit, minmax(25em, 1fr));
     grid-gap: 2em;
   }
   #restaurants-list li {
-    width: 300px;  
+    max-width: 350px;  
   }
 }
