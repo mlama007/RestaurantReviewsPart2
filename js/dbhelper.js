@@ -18,13 +18,42 @@ class DBHelper {
   static fetchRestaurants(callback) {
     fetch(DBHelper.DATABASE_URL)
     .then(response => response.json())
-    .then(function(jsonResponse) {
-      callback(null, jsonResponse);
+    .then(function addData(data){
+      console.table(data)
+
+      if (!('indexedDB' in window)) {
+        console.log('This browser doesn\'t support IndexedDB');
+        return;
+      }
+  
+      var dbPromise = idb.open(
+        'restaurantStore', 2, function(upgradeDb) {
+        switch(upgradeDb.oldVersion) {
+          case 0:
+            upgradeDb.createObjectStore('restaurantReviews', {
+              keyPath: 'id'
+            });
+        }
+      });
+
+      dbPromise.then(function(db) {
+        var tx = db.transaction('restaurantReviews', 'readwrite');
+        var keyValStore = tx.objectStore('restaurantReviews');
+        data.forEach(datas => {
+          var placedData = keyValStore.put(datas);
+          return placedData;
+        });
+        // return tx.complete;
+        console.log('Added restaurant');
+      })
+      .catch(function(error) {
+        const errorMessage = (`Request failed. Returned status of ${error}`);
+        // callback(errorMessage, null);
+      })
+      callback(null, data);
+      
     })
-    .catch(function(error) {
-      const errorMessage = (`Request failed. Returned status of ${error}`);
-      callback(errorMessage, null);
-    });
+    
   }
   
   /**
@@ -169,6 +198,6 @@ class DBHelper {
       animation: google.maps.Animation.DROP}
     );
     return marker;
-  }
+  }  
 
 }
