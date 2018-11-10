@@ -302,6 +302,10 @@ input[type="submit"] {
   font-size: 1em;
   font-weight: bold;
 }
+.nameRate {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
 
 /* ====================== Media Quaries ====================== */
 
@@ -320,7 +324,9 @@ input[type="submit"] {
   .inside #map {
     height: 100%;
   }
-  
+  .nameRate {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media screen and (min-width: 750px) {  
@@ -331,5 +337,8 @@ input[type="submit"] {
   }
   #restaurants-list li {
     max-width: 350px;  
+  }
+  .nameRate {
+    grid-template-columns: 1fr 1fr;
   }
 }

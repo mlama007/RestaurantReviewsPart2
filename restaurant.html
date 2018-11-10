@@ -49,25 +49,26 @@
           "rating": <rating>,
           "comments": <comment_text> -->
             <form id="reviewForm">
+              <div class="nameRate">
+                  <div class="labelInput">
+                      <label for="name">Your Name:</label> <br>
+                      <input type="text" id="name" name="name" placeholder="Your Name" required/>
+                    </div>
+                    <div class="labelInput">
+                      <label for="rating">Rate Restaurant: </label>
+                      <select name="rating">
+                        <option value="5"selected>5</option>
+                        <option value="4">4</option>
+                        <option value="3">3</option>
+                        <option value="2">2</option>
+                        <option value="1">1</option>
+                      </select>
+                    </div>
+              </div>
+                <textarea class="reviewInput" name="comments" placeholder="Write your review here" rows="6" required></textarea>
                 <div class="labelInput">
-                  <label for="name">Your Name:</label> <br>
-                  <input type="text" id="name" name="name" placeholder="Your Name" required/>
-                </div>
-                <div class="labelInput">
-                  <label for="rating">Rate Restaurant: </label>
-                  <select name="rating">
-                    <option value="5"selected>5</option>
-                    <option value="4">4</option>
-                    <option value="3">3</option>
-                    <option value="2">2</option>
-                    <option value="1">1</option>
-                  </select>
-                </div>
-                  <!-- <label for="reviewText">Review text:</label> -->
-                  <textarea class="reviewInput" name="comments" placeholder="Write your review here" rows="6" required></textarea>
-                <p>
                   <input type="submit" value="Submit Review">
-                </p>
+                </div>
               </form>
         </ul>
       </section>
