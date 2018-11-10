@@ -3,6 +3,8 @@ const files = [
   'restaurant.html',
   // CSS
   'css/styles.css',
+  // manifest
+  'manifest.json',
   // data
   'http://localhost:1337/restaurants',
   // img
@@ -72,3 +74,4 @@ self.addEventListener('fetch', function(event) {
     })
   );
 });
+

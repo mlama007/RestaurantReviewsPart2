@@ -57,7 +57,7 @@ class DBHelper {
   }
   
   /**
-   * Fetch a restaurant by its ID.
+   * Fetch restaurant by ID
    */
   static fetchRestaurantById(id, callback) {
     // fetch all restaurants with proper error handling.
@@ -198,6 +198,87 @@ class DBHelper {
       animation: google.maps.Animation.DROP}
     );
     return marker;
-  }  
+  } 
+
+  /**
+	 * Fetch restaurant's reviews
+	 */
+	static fetchRestaurantReviews(restaurant, callback) {
+		DBHelper.dbPromise.then(db => {
+			if (!db) return;
+			const tx = db.transaction('all-reviews');
+			const store = tx.objectStore('all-reviews');
+			store.getAll().then(results => {
+				if (results && results.length > 0) {
+					callback(null, results);
+				} else {
+					fetch(`${DBHelper.DATABASE_URL}/reviews/?restaurant_id=${restaurant.id}`)
+					.then(response => {
+						return response.json();
+					})
+					.then(reviews => {
+						this.dbPromise.then(db => {
+							if (!db) return;
+							const tx = db.transaction('all-reviews', 'readwrite');
+							const store = tx.objectStore('all-reviews');
+							reviews.forEach(review => {
+								store.put(review);
+							})
+						});
+						callback(null, reviews);
+					})
+					.catch(error => {
+						callback(error, null);
+					})
+				}
+			})
+		});
+	}
+  /**
+   * Add reviews
+   */
+  static submitReview(data) {
+		console.log(data);
+		
+		return fetch(`${DBHelper.DATABASE_URL}/reviews`, {
+			body: JSON.stringify(data), 
+			cache: 'no-cache',
+			credentials: 'same-origin',
+			headers: {
+				'content-type': 'application/json'
+			},
+			method: 'POST',
+			mode: 'cors',
+			redirect: 'follow',
+			referrer: 'no-referrer',
+		})
+		.then(response => {
+			response.json()
+				.then(data => {
+					this.dbPromise.then(db => {
+						if (!db) return;
+						const tx = db.transaction('all-reviews', 'readwrite');
+						const store = tx.objectStore('all-reviews');
+						store.put(data);
+          });
+          console.log(data);
+					return data;
+        })
+		})
+		.catch(error => {
+			data['updatedAt'] = new Date().getTime();
+			console.log(data);
+			
+			this.dbPromise.then(db => {
+				if (!db) return;
+				// Put fetched reviews into IDB
+				const tx = db.transaction('offline-reviews', 'readwrite');
+				const store = tx.objectStore('offline-reviews');
+				store.put(data);
+				console.log('Review stored offline in IDB');
+			});
+			return;
+		});
+	}
 
 }

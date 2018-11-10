@@ -41,7 +41,35 @@
       </div>
       <!-- Beginning reviews -->
       <section tabindex="6" id="reviews-container">
-        <ul id="reviews-list"></ul>
+        <h3>Reviews</h3>
+        <ul id="reviews-list">
+          <!-- Parameters
+          "restaurant_id": <restaurant_id>,
+          "name": <reviewer_name>,
+          "rating": <rating>,
+          "comments": <comment_text> -->
+            <form id="reviewForm">
+                <div class="labelInput">
+                  <label for="name">Name:</label>
+                  <input type="text" id="name" name="name" placeholder="Your Name" required/>
+                </div>
+                <div class="labelInput">
+                  <label for="rating">Rating: </label>
+                  <select name="rating">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5"selected>5</option>
+                  </select>
+                </div>
+                  <!-- <label for="reviewText">Review text:</label> -->
+                  <textarea rows="6" name="comments" placeholder="Write your review here" required></textarea>
+                <p>
+                  <input type="submit" value="Submit Review">
+                </p>
+              </form>
+        </ul>
       </section>
     </section>
     <!-- Beginning map -->

@@ -253,9 +253,6 @@ nav h1 a {
 	width: 90%;
 }
 
-#reviews-container {
-  padding: 30px 40px 80px;
-}
 #reviews-container h2 {
   color: #f58500;
   font-size: 24pt;
@@ -283,6 +280,19 @@ nav h1 a {
 }
 #restaurant-hours td {
   color: #666;
+}
+
+#reviews-container{
+  border: 1px solid #ddd;
+  background-color: #eee;
+  margin: 2em;
+  padding: 1em;
+}
+input[type="submit"] {
+  border: 1px solid #aaa;
+}
+.labelInput{
+  padding: .5em;
 }
 
 /* ====================== Media Quaries ====================== */
