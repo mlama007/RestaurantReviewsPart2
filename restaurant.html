@@ -50,21 +50,21 @@
           "comments": <comment_text> -->
             <form id="reviewForm">
                 <div class="labelInput">
-                  <label for="name">Name:</label>
+                  <label for="name">Your Name:</label> <br>
                   <input type="text" id="name" name="name" placeholder="Your Name" required/>
                 </div>
                 <div class="labelInput">
-                  <label for="rating">Rating: </label>
+                  <label for="rating">Rate Restaurant: </label>
                   <select name="rating">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
                     <option value="5"selected>5</option>
+                    <option value="4">4</option>
+                    <option value="3">3</option>
+                    <option value="2">2</option>
+                    <option value="1">1</option>
                   </select>
                 </div>
                   <!-- <label for="reviewText">Review text:</label> -->
-                  <textarea rows="6" name="comments" placeholder="Write your review here" required></textarea>
+                  <textarea class="reviewInput" name="comments" placeholder="Write your review here" rows="6" required></textarea>
                 <p>
                   <input type="submit" value="Submit Review">
                 </p>
