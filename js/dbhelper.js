@@ -240,7 +240,7 @@ class DBHelper {
   static submitReview(data) {
 		console.log(data);
 		
-		return fetch(`${DBHelper.DATABASE_URL}/reviews`, {
+		return fetch(`${DBHelper.DATABASE_URL}`, {
 			body: JSON.stringify(data), 
 			cache: 'no-cache',
 			credentials: 'same-origin',

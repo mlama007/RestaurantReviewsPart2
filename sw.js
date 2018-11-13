@@ -74,3 +74,62 @@ self.addEventListener('fetch', function(event) {
     })
   );
 });
+
+
+
+self.addEventListener('sync', function (event) {
+	if (event.tag == 'myFirstSync') {
+		const DBOpenRequest = indexedDB.open('restaurants', 1);
+		DBOpenRequest.onsuccess = function (e) {
+			db = DBOpenRequest.result;
+			let tx = db.transaction('offline-reviews', 'readwrite');
+			let store = tx.objectStore('offline-reviews');
+			let request = store.getAll();
+			request.onsuccess = function () {
+				for (let i = 0; i < request.result.length; i++) {
+					fetch(`http://localhost:1337/reviews/`, {
+						body: JSON.stringify(request.result[i]),
+						cache: 'no-cache',
+						credentials: 'same-origin',
+						headers: {
+							'content-type': 'application/json'
+						},
+						method: 'POST',
+						mode: 'cors',
+						redirect: 'follow',
+						referrer: 'no-referrer',
+					})
+					.then(response => {
+						return response.json();
+					})
+					.then(data => {
+						let tx = db.transaction('all-reviews', 'readwrite');
+						let store = tx.objectStore('all-reviews');
+						let request = store.add(data);
+						request.onsuccess = function (data) {
+							let tx = db.transaction('offline-reviews', 'readwrite');
+							let store = tx.objectStore('offline-reviews');
+							let request = store.clear();
+							request.onsuccess = function () { };
+							request.onerror = function (error) {
+								console.log(error);
+							}
+						};
+						request.onerror = function (error) {
+							console.log(error);
+						}
+					})
+					.catch(error => {
+						console.log(error);
+					})
+				}
+			}
+			request.onerror = function (e) {
+				console.log(e);
+			}
+		}
+		DBOpenRequest.onerror = function (e) {
+			console.log(e);
+		}
+	}
+});
