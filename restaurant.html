@@ -7,7 +7,8 @@
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
   <!-- Main CSS file -->
   <link rel="stylesheet" href="css/styles.css" type="text/css">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#3ABFEF"/>
+  <link rel="manifest" href="manifest.json">
   <title>Restaurant Info</title>
 </head>
 
@@ -33,7 +34,10 @@
     <!-- Beginning restaurant -->
     <section id="restaurant-container">
       <div class="restaurant-info">
-        <h2 tabindex="3" id="restaurant-name"></h2>
+        <div class="restauranHeader">
+          <h2 tabindex="3" id="restaurant-name"></h2>
+          <button class="favorite" id='toggleHere' onclick="favToggle()"><span id="favIcon">&starf;</span></button>
+        </div>
         <img id="restaurant-img">
         <p id="restaurant-cuisine"></p>
         <p tabindex="4" id="restaurant-address"></p>
@@ -41,7 +45,7 @@
       </div>
       <!-- Beginning reviews -->
       <section tabindex="6" id="reviews-container">
-        <h3>Reviews</h3>
+        <h2>Reviews</h2>
         <ul id="reviews-list">
           <!-- Parameters
           "restaurant_id": <restaurant_id>,
@@ -69,6 +73,7 @@
                 <div class="labelInput">
                   <input type="submit" value="Submit Review">
                 </div>
+                <h3>Reviews</h3>
               </form>
         </ul>
       </section>

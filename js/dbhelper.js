@@ -182,7 +182,7 @@ class DBHelper {
     return (`./img/${restaurant.photograph}.jpg`);
   }
   static imageALTForRestaurant(restaurant) {
-    return (`${restaurant.alt}`);
+    return (`${restaurant.name}`);
   }
   
 

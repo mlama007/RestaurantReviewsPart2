@@ -96,7 +96,6 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
  */
 fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   const container = document.getElementById('reviews-container');
-  container.appendChild(title);
 
   if (!reviews) {
     const noReviews = document.createElement('p');
@@ -177,3 +176,11 @@ getParameterByName = (name, url) => {
     return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
+
+/**
+ * Toggle fav
+ */
+favToggle = () => {
+  const favCon = document.getElementById('toggleHere');
+  favCon.classList.toggle('star');
+ }

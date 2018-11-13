@@ -27,7 +27,7 @@ const files = [
 // caching
 self.addEventListener('install', function(event) {
   event.waitUntil(
-    caches.open('Version_1').then(function(cache) {
+    caches.open('Version_2').then(function(cache) {
       return cache.addAll(files);
     })
   );
@@ -74,4 +74,3 @@ self.addEventListener('fetch', function(event) {
     })
   );
 });
-
