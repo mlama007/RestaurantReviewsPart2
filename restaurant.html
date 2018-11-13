@@ -36,7 +36,7 @@
       <div class="restaurant-info">
         <div class="restauranHeader">
           <h2 tabindex="3" id="restaurant-name"></h2>
-          <button class="favorite" id='toggleHere' onclick="favToggle()"><span id="favIcon">&starf;</span></button>
+          <input type="checkbox" id="favCheck"> <label for="favCheck" class="favorite" id='toggleHere' onclick="favToggle()"><span id="favIcon">&starf;</span></label>
         </div>
         <img id="restaurant-img">
         <p id="restaurant-cuisine"></p>
@@ -95,6 +95,7 @@
   <!-- Database helpers -->
   <script type="text/javascript" src="js/dbhelper.js"></script>
   <script type="text/javascript" src="js/idb.js"></script>
+  <script type="application/javascript" charset="utf-8" src="./sw.js"></script>
   <!-- Main javascript file -->
   <script type="text/javascript" src="js/restaurant_info.js"></script>
   <!-- Google Maps -->

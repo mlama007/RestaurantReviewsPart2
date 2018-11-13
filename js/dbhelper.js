@@ -281,4 +281,34 @@ class DBHelper {
 		});
 	}
 
+  static toggleFavorite(restaurant, isFavorite) {
+		fetch(`${DBHelper.DATABASE_URL}/${restaurant.id}/?is_favorite=${!isFavorite}`, {
+			method: 'PUT'
+		})
+		.then(response => {
+			return response.json();
+		})
+		.then(data => {
+			DBHelper.dbPromise.then(db => {
+				if (!db) return;
+				const tx = db.transaction('all-restaurants', 'readwrite');
+				const store = tx.objectStore('all-restaurants');
+				store.put(data)
+			});
+			return data;
+		})
+		.catch(error => {
+      restaurant.is_favorite = isFavorite;
+      console.log(error);
+			DBHelper.dbPromise.then(db => {
+				if (!db) return;
+				const tx = db.transaction('all-restaurants', 'readwrite');
+				const store = tx.objectStore('all-restaurants');
+				store.put(restaurant);
+			}).catch(error => {
+				console.log(error);
+				return;
+			});
+		});
+	}
 }

@@ -314,7 +314,7 @@ input[type="submit"] {
   grid-template-columns: 10fr 2fr;
 }
 #favIcon {
-  font-size: 2em;
+  font-size: 1.5em;
 }
 .favorite {
   border-radius: 30px 30px;
@@ -324,13 +324,16 @@ input[type="submit"] {
   background-color: transparent;
   margin: 15px 0 30px;
   padding: 0;
+  text-align: center;
 }
 .star {
   color: #f18200;
   text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.3);
   background-color: black;
 }
-
+input#favCheck {
+  display: none;
+}
 
 /* ====================== Media Quaries ====================== */
 

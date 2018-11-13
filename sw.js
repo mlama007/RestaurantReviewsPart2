@@ -22,12 +22,14 @@ const files = [
   'js/dbhelper.js',
   'js/main.js',
   'js/restaurant_info.js',
+
 ]
+let staticCacheName = 'Version_1';
 
 // caching
 self.addEventListener('install', function(event) {
   event.waitUntil(
-    caches.open('Version_2').then(function(cache) {
+    caches.open('Version_1').then(function(cache) {
       return cache.addAll(files);
     })
   );
