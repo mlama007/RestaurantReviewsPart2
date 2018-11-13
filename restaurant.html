@@ -3,10 +3,8 @@
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Normalize.css for better cross-browser consistency -->
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
-  <!-- Main CSS file -->
-  <link rel="stylesheet" href="css/styles.css" type="text/css">
+  <link rel="stylesheet" href="css/styles.css">
   <meta name="theme-color" content="#3ABFEF"/>
   <link rel="manifest" href="manifest.json">
   <title>Restaurant Info</title>
@@ -17,12 +15,12 @@
   <header>
     <!-- Beginning nav -->
     <nav>
-      <h1><a href="/" tabindex="1" aria-label="Restaurant Reviews">Restaurant Reviews</a></h1>
+      <h1><a href="/" tabindex="0" aria-label="Restaurant Reviews">Restaurant Reviews</a></h1>
     </nav> 
     <!-- Beginning breadcrumb -->
     <nav id="breadcrumb" role="navigation" aria-label="breadcrumb">
       <ul>
-        <li><a tabindex="2" href="/">Home</a></li>
+        <li><a tabindex="0" href="/">Home</a></li>
       </ul>  
     </nav> 
     <!-- End nav -->
@@ -35,18 +33,18 @@
     <section id="restaurant-container">
       <div class="restaurant-info">
         <div class="restauranHeader">
-          <h2 tabindex="3" id="restaurant-name"></h2>
-          <input type="checkbox" id="favCheck"> <label for="favCheck" class="favorite" id='toggleHere' onclick="favToggle()"><span id="favIcon">&starf;</span></label>
+          <h2 tabindex="0" id="restaurant-name"></h2>
+          <input type="checkbox" id="favCheck"> <label for="favCheck" class="favorite" id='toggleHere' onclick="favToggle()"><button aria-label="make favorite" id="favIcon">&starf;</button></label>
         </div>
         <img id="restaurant-img">
         <p id="restaurant-cuisine"></p>
-        <p tabindex="4" id="restaurant-address"></p>
-        <table tabindex="5" id="restaurant-hours"></table>
+        <p tabindex="0" id="restaurant-address"></p>
+        <table tabindex="0" id="restaurant-hours"></table>
       </div>
       <!-- Beginning reviews -->
-      <section tabindex="6" id="reviews-container">
+      <section tabindex="0" id="reviews-container">
         <h2>Reviews</h2>
-        <ul id="reviews-list">
+        <div id="reviews-list">
           <!-- Parameters
           "restaurant_id": <restaurant_id>,
           "name": <reviewer_name>,
@@ -60,7 +58,7 @@
                     </div>
                     <div class="labelInput">
                       <label for="rating">Rate Restaurant: </label>
-                      <select name="rating">
+                      <select id='rating' name="rating" aria-label="Customer rating">
                         <option value="5"selected>5</option>
                         <option value="4">4</option>
                         <option value="3">3</option>
@@ -69,17 +67,19 @@
                       </select>
                     </div>
               </div>
-                <textarea class="reviewInput" name="comments" placeholder="Write your review here" rows="6" required></textarea>
-                <div class="labelInput">
-                  <input type="submit" value="Submit Review">
-                </div>
-                <h3>Reviews</h3>
-              </form>
-        </ul>
+              <textarea class="reviewInput" id="comments" name="comments" aria-label="comments from customer" placeholder="Write your review here" rows="6" required></textarea>
+              <div class="labelInput">
+                <!-- <input type="submit" value="Submit Review" onclick="saveReview()"> -->
+                  <button class="submitButton" id="review-add-btn" >Submit</button>
+                  <button class="cancelButton">Cancel</button>
+              </div>
+              <ul id="reviewsNew"></ul>
+            </form>
+        </div>
       </section>
     </section>
     <!-- Beginning map -->
-    <section tabindex="-1" aria-label="Google Map" id="map-container">
+    <section tabindex="0" aria-label="Google Map" id="map-container">
       <div role="application" id="map"></div>
     </section>
 
@@ -92,13 +92,10 @@
   </footer>
 
   <!-- Beginning scripts -->
-  <!-- Database helpers -->
-  <script type="text/javascript" src="js/dbhelper.js"></script>
-  <script type="text/javascript" src="js/idb.js"></script>
-  <script type="application/javascript" charset="utf-8" src="./sw.js"></script>
-  <!-- Main javascript file -->
   <script type="text/javascript" src="js/restaurant_info.js"></script>
-  <!-- Google Maps -->
+  <script type="application/javascript" charset="utf-8" src="js/dbhelper.js"></script>
+  <script type="application/javascript" charset="utf-8" src="js/idb.js"></script>
+  <script type="application/javascript" charset="utf-8" src="./sw.js"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDb6Ea35UOu4hSZjPZ7H5MJBoZaJIFTLmQ&libraries=geometry&v=3&callback=initMap"></script>
 
 </body>

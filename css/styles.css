@@ -92,8 +92,10 @@ nav h1 a {
 
 /* Add a color to all links inside the list */
 #breadcrumb li a {
-    color: #0275d8;
+    color: #002d55;
     text-decoration: none;
+    font-weight: bolder;
+    font-size: 1.5em;
 }
 
 /* Add a color on mouse-over */
@@ -171,7 +173,7 @@ nav h1 a {
   min-width: 100%;
 }
 #restaurants-list li h1 {
-  color: #f18200;
+  color: #663600;
   font-family: Arial,sans-serif;
   font-size: 14pt;
   font-weight: 200;
@@ -224,7 +226,7 @@ nav h1 a {
   width: 1fr;
 }
 #restaurant-name {
-  color: #f18200;
+  color: #663600;
   font-family: Arial,sans-serif;
   font-size: 20pt;
   font-weight: 200;
@@ -254,7 +256,7 @@ nav h1 a {
 }
 
 #reviews-container h2 {
-  color: #f58500;
+  color: #663600;
   font-size: 24pt;
   font-weight: 300;
   letter-spacing: -1px;
@@ -315,6 +317,10 @@ input[type="submit"] {
 }
 #favIcon {
   font-size: 1.5em;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin-top: 4px;
 }
 .favorite {
   border-radius: 30px 30px;
@@ -327,12 +333,18 @@ input[type="submit"] {
   text-align: center;
 }
 .star {
-  color: #f18200;
   text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.3);
   background-color: black;
 }
+.stared{
+  color: white;
+}
 input#favCheck {
   display: none;
+}
+
+#reviewsNew li {
+  list-style: none;
 }
 
 /* ====================== Media Quaries ====================== */
