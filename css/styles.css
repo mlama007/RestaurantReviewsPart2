@@ -311,38 +311,16 @@ input[type="submit"] {
 
 
 /* FAVORITE */
-.restauranHeader{
+#restauranHeader{
   display: grid;
   grid-template-columns: 10fr 2fr;
 }
-#favIcon {
-  font-size: 1.5em;
-  border: none;
-  background: transparent;
-  padding: 0;
-  margin-top: 4px;
-}
-.favorite {
-  border-radius: 30px 30px;
-  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.3);
-  width: 2.5em;
-  height: 2.5em;
-  background-color: transparent;
-  margin: 15px 0 30px;
-  padding: 0;
+.favoriteDiv{
   text-align: center;
 }
-.star {
-  text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.3);
-  background-color: black;
+.hiddenelement{
+  visibility: hidden;
 }
-.stared{
-  color: white;
-}
-input#favCheck {
-  display: none;
-}
-
 #reviewsNew li {
   list-style: none;
 }
@@ -359,7 +337,7 @@ input#favCheck {
 }
 @media screen and (min-width: 550px) {  
   .inside #maincontent{
-    grid-template-columns: 40% 60%;
+    grid-template-columns: 50% 50%;
   }  
   .inside #map {
     height: 100%;

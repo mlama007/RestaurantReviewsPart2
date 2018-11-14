@@ -3,6 +3,7 @@ let restaurants,
   cuisines
 var map
 var markers = []
+let firstLoad = true;
 
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
@@ -129,7 +130,19 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
   restaurants.forEach(restaurant => {
     ul.append(createRestaurantHTML(restaurant));
   });
-  addMarkersToMap();
+  if (firstLoad) {
+    fetchNeighborhoods();
+    fetchCuisines();
+    const mapDiv = document.getElementById("map");
+    const mapImg = document.createElement("img");
+    mapImg.id = "mapImg";
+    mapImg.onclick = e => switchToLiveMap();
+    mapDiv.append(mapImg);
+
+    firstLoad = false;
+  } else {
+    addMarkersToMap();
+  }
 }
 
 /**
@@ -138,24 +151,63 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
 createRestaurantHTML = (restaurant) => {
   const li = document.createElement('li');
 
+  // Images
   const image = document.createElement('img');
   image.className = 'restaurant-img';
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
   image.alt = restaurant.name + "restaurant image";
   li.append(image);
 
+  // Name
   const name = document.createElement('h2');
   name.innerHTML = restaurant.name;
   li.append(name);
 
+  // Favorites
+  console.log("is_favorite: ", restaurant["is_favorite"]);
+  const isFavorite = (restaurant["is_favorite"] && restaurant["is_favorite"].toString() === "true") ? true : false;
+  const favoriteDiv = document.createElement("div");
+  favoriteDiv.className = "favorite-icon";
+  const favorite = document.createElement("button");
+  favorite.style.background = isFavorite
+    ? `url("/img/icons/like.svg") no-repeat`
+    : `url("/img/icons/dislike.svg") no-repeat`;
+  favorite.innerHTML = isFavorite
+    ? "<span class='hiddenelement'>></span> Favorite - View Details to edit favorite"
+    : "<span class='hiddenelement'>></span> Not favorite - View Details to edit favorite";
+  favorite.id = "favorite-icon-" + restaurant.id;
+  // favorite.onclick = event => handleFavoriteClick(restaurant.id, !isFavorite);
+  favoriteDiv.append(favorite);
+  li.append(favoriteDiv);
+
+
+  // const favoriteDiv = document.createElement("div");
+  // favoriteDiv.classList.add('favoriteDiv');
+  // favoriteDiv.innerHTML = '<label for="favCheck'+ restaurant.id +'"> Add to favorite:</label><input type="checkbox" id="favCheck'+ restaurant.id + '">'
+  // li.append(favoriteDiv);
+
+  // const favCheck = document.getElementById('favCheck' + restaurant.id );
+  // favCheck.checked = restaurant.is_favorite;
+  // if (favCheck.checked) {
+  //   favCheck.style.background = `url("/img/icons/like.svg") no-repeat`
+  // } else {
+  //   favCheck.style.background = `url("/img/icons/dislike.svg") no-repeat`;
+  // }
+	// favCheck.addEventListener('change', event => {
+	// 	DBHelper.toggleFavorite(restaurant, event.target.checked);
+  // });
+
+  // neighborhood
   const neighborhood = document.createElement('p');
   neighborhood.innerHTML = restaurant.neighborhood;
   li.append(neighborhood);
 
+  // address
   const address = document.createElement('p');
   address.innerHTML = restaurant.address;
   li.append(address);
 
+  // Details
   const more = document.createElement('a');
   more.name = DBHelper.ariaForRestaurant(restaurant);
   more.innerHTML = '<span class= "hidden">'+ more.name+ '</span>' + 'View Details';
@@ -165,6 +217,19 @@ createRestaurantHTML = (restaurant) => {
 
   return li
 }
+
+const handleFavoriteClick = (id, newState) => {
+  // Update properties of the restaurant data object
+  const favorite = document.getElementById("favorite-icon-" + id);
+  const restaurant = self
+    .restaurants
+    .filter(r => r.id === id)[0];
+  if (!restaurant)
+    return;
+  restaurant["is_favorite"] = newState;
+  // favorite.onclick = event => handleFavoriteClick(restaurant.id, !restaurant["is_favorite"]);
+  DBHelper.handleFavoriteClick(id, newState);
+};
 
 /**
  * Add markers for current restaurants to the map.
@@ -191,21 +256,3 @@ if ('serviceWorker' in navigator) {
     }
   )
 }
-
-
-window.addEventListener('load', function() {
-  var status = document.getElementById("status");
-  var log = document.getElementById("log");
-
-  function updateOnlineStatus(event) {
-    var condition = navigator.onLine ? "online" : "offline";
-
-    status.className = condition;
-    status.innerHTML = condition.toUpperCase();
-
-    log.insertAdjacentHTML("beforeend", "Event: " + event.type + "; Status: " + condition);
-  }
-
-  window.addEventListener('online',  updateOnlineStatus);
-  window.addEventListener('offline', updateOnlineStatus);
-});
