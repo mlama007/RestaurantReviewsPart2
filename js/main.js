@@ -81,6 +81,7 @@ window.initMap = () => {
     scrollwheel: false
   });
   updateRestaurants();
+  DBHelper.nextPending();
 }
 
 /**
@@ -151,7 +152,6 @@ createRestaurantHTML = (restaurant) => {
   li.append(name);
 
   // Favorites
-  console.log("is_favorite: ", restaurant["is_favorite"]);
   const isFavorite = (restaurant["is_favorite"] && restaurant["is_favorite"].toString() === "true") ? true : false;
   const favoriteDiv = document.createElement("div");
   favoriteDiv.className = "favorite-icon";

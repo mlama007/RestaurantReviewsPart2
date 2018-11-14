@@ -328,6 +328,15 @@ input[type="submit"] {
   border: none;
 }
 
+/* reviews */
+#reviewsNew li{
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: white;
+  margin: 1em;
+  padding: .5em;
+}
+
 /* ====================== Media Quaries ====================== */
 
 @media screen and (min-width: 500px) {  

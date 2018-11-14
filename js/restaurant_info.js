@@ -1,5 +1,4 @@
 let restaurant;
-let review;
 var map;
 
 /**
@@ -19,6 +18,7 @@ window.initMap = () => {
       DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
     }
   });
+  DBHelper.nextPending();
 }
 
 /**
@@ -88,10 +88,8 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
     fillRestaurantHoursHTML();
   }
   // fill reviews
-  fillReviewsHTML();
-  DBHelper.fetchRestaurantReviewsById(restaurant.id, fillReviewsHTML);
+  DBHelper.fetchRestaurantReviewsById(restaurant.id, fillReviewsHTML)
 }
-
 /**
  * Create restaurant operating hours HTML table and add it to the webpage.
  */
@@ -116,7 +114,6 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
  * Create all reviews HTML and add them to the webpage.
  */
 const fillReviewsHTML = (error, reviews) => {
-  self.restaurant.reviews = reviews;
   const container = document.getElementById('reviews-container');
 
   if (error) {
@@ -205,34 +202,6 @@ fetchReviews = () => {
     }
   })
 }
-
-
-
-function saveReview(e) {
-  e.preventDefault();
-  const form = e.target;
-    const restaurant_id = self.restaurant.id;
-    const name = document.querySelector('#name').value;
-    const rating = document.querySelector('#rating').value;
-    const comments = document.querySelector('#comments').value;
-    // attempt save to database server
-    DBHelper.createRestaurantReview(restaurant_id, name, rating, comments, (error, review) => {
-      console.log('got callback');
-      if (error) {
-        console.log('We are offline. Review has been saved to the queue.');
-      } else {
-        console.log('Received updated record from DB Server', review);
-        DBHelper.createIDBReview(review); // write record to local IDB store
-      }
-      idbKeyVal.getAllIdx('reviews', 'restaurant_id', restaurant_id)
-        .then(reviews => {
-          fillReviewsHTML(null, reviews);
-          document.getElementById('review-add-btn').focus();
-        });
-    });
-};
-
-
 
 // Show submitted Review
 const form = document.getElementById("reviewForm");
