@@ -324,6 +324,9 @@ input[type="submit"] {
 #reviewsNew li {
   list-style: none;
 }
+.favorite-icon button{
+  border: none;
+}
 
 /* ====================== Media Quaries ====================== */
 

@@ -3,7 +3,6 @@ let restaurants,
   cuisines
 var map
 var markers = []
-let firstLoad = true;
 
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
@@ -130,19 +129,7 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
   restaurants.forEach(restaurant => {
     ul.append(createRestaurantHTML(restaurant));
   });
-  if (firstLoad) {
-    fetchNeighborhoods();
-    fetchCuisines();
-    const mapDiv = document.getElementById("map");
-    const mapImg = document.createElement("img");
-    mapImg.id = "mapImg";
-    mapImg.onclick = e => switchToLiveMap();
-    mapDiv.append(mapImg);
-
-    firstLoad = false;
-  } else {
     addMarkersToMap();
-  }
 }
 
 /**
@@ -173,8 +160,8 @@ createRestaurantHTML = (restaurant) => {
     ? `url("/img/icons/like.svg") no-repeat`
     : `url("/img/icons/dislike.svg") no-repeat`;
   favorite.innerHTML = isFavorite
-    ? "<span class='hiddenelement'>></span> Favorite - View Details to edit favorite"
-    : "<span class='hiddenelement'>></span> Not favorite - View Details to edit favorite";
+    ? "<span class='hiddenelement'>></span> <strong>Favorite</strong> - View Details to edit"
+    : "<span class='hiddenelement'>></span> <strong>Not Favorite</strong> - View Details to edit";
   favorite.id = "favorite-icon-" + restaurant.id;
   // favorite.onclick = event => handleFavoriteClick(restaurant.id, !isFavorite);
   favoriteDiv.append(favorite);

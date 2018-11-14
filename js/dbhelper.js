@@ -327,15 +327,7 @@ class DBHelper {
 		.catch(error => {
       restaurant.is_favorite = isFavorite;
       console.log(error);
-			// DBHelper.dbPromise.then(db => {
-			// 	if (!db) return;
-			// 	const tx = db.transaction('all-restaurants', 'readwrite');
-			// 	const store = tx.objectStore('all-restaurants');
-			// 	store.put(restaurant);
-			// }).catch(error => {
-			// 	console.log(error);
 				return;
-			// });
 		});
 	}
 

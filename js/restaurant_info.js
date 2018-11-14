@@ -21,31 +21,19 @@ window.initMap = () => {
   });
 }
 
-document.addEventListener('DOMContentLoaded', (event) => {  
-  fetchReviews();
-});
-
-fetchReviews = () => {
-  DBHelper.fetchReviews((error, reviews)=>{
-    if (error){
-      console.log(`An error with getting reviews information has occured ${error}`);
-    } else {
-      self.reviews = reviews;
-    }
-  })
-}
-
 /**
  * Get current restaurant from page URL.
  */
-fetchRestaurantFromURL = (callback) => {
-  if (self.restaurant) { // restaurant already fetched!
-    callback(null, self.restaurant)
+const fetchRestaurantFromURL = callback => {
+  if (self.restaurant) {
+    // restaurant already fetched!
+    callback(null, self.restaurant);
     return;
   }
-  const id = getParameterByName('id');
-  if (!id) { // no id found in URL
-    error = 'No restaurant id in URL'
+  const id = getParameterByName("id");
+  if (!id) {
+    // no id found in URL
+    const error = "No restaurant id in URL";
     callback(error, null);
   } else {
     DBHelper.fetchRestaurantById(id, (error, restaurant) => {
@@ -55,10 +43,10 @@ fetchRestaurantFromURL = (callback) => {
         return;
       }
       fillRestaurantHTML();
-      callback(null, restaurant)
+      callback(null, restaurant);
     });
   }
-}
+};
 
 /**
  * Create restaurant HTML and add it to the webpage
@@ -66,11 +54,6 @@ fetchRestaurantFromURL = (callback) => {
 fillRestaurantHTML = (restaurant = self.restaurant) => {
   const name = document.getElementById('restaurant-name');
   name.innerHTML = restaurant.name;
-
-{/* <div class="favoriteDiv">
-  <label for="favCheck"> Add to favorite:</label>
-  <input type="checkbox" id="favCheck">
-</div> */}
 
   const restauranHeader = document.getElementById("restauranHeader");
   const favoriteDiv = document.createElement("div");
@@ -205,6 +188,26 @@ getParameterByName = (name, url) => {
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
 
+
+
+
+// Fetch Reviews from server
+document.addEventListener('DOMContentLoaded', (event) => {  
+  fetchReviews();
+});
+
+fetchReviews = () => {
+  DBHelper.fetchReviews((error, reviews)=>{
+    if (error){
+      console.log(`An error with getting reviews information has occured ${error}`);
+    } else {
+      self.reviews = reviews;
+    }
+  })
+}
+
+
+
 function saveReview(e) {
   e.preventDefault();
   const form = e.target;
@@ -231,7 +234,7 @@ function saveReview(e) {
 
 
 
-
+// Show submitted Review
 const form = document.getElementById("reviewForm");
 form.addEventListener("submit", function (event) {
 	event.preventDefault();
@@ -244,6 +247,7 @@ form.addEventListener("submit", function (event) {
 		.then(data => {
 			const ul = document.getElementById('reviewsNew');
       ul.appendChild(createReviewHTML(review));
+      form.reset();
 		})
 		.catch(error => console.error(error))
 });
