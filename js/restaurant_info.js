@@ -18,7 +18,7 @@ window.initMap = () => {
       DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
     }
   });
-  DBHelper.nextPending();
+  // DBHelper.nextPending();
 }
 
 /**
@@ -107,9 +107,9 @@ const fillReviewsHTML = (error, reviews) => {
   ul.innerHTML = '';
   reviews.reverse();
   reviews.forEach(review => {
-    ul.appendChild(createReviewHTML(review));
+    ul.append(createReviewHTML(review));
   });
-  container.appendChild(ul);
+  container.append(ul);
 };
 /**
  * Create review HTML and add it to the webpage.
@@ -121,13 +121,13 @@ createReviewHTML = (review) => {
 	name.setAttribute('tabindex', 0);
 	li.appendChild(name);
 
-	const createdAt = document.createElement('p');
-  createdAt.classList.add('createdAt');
-  const createdDate = review.createdAt ?
-    new Date(review.createdAt).toLocaleDateString() :
-    'Pending';
-  createdAt.innerHTML = `${createdDate}`;
-  li.appendChild(createdAt);
+	const updatedAt = document.createElement('p');
+  updatedAt.classList.add('updatedAt');
+  const updatedAtDATE = review.updatedAt ?
+    new Date(review.updatedAt).toLocaleString().replace(',', ''):
+    'Today';
+    updatedAt.innerHTML = `${updatedAtDATE}`;
+  li.appendChild(updatedAt);
 
 	const rating = document.createElement('p');
 	rating.innerHTML = `Rating: ${review.rating}`;

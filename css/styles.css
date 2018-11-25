@@ -353,12 +353,6 @@ input[type="submit"] {
   }
 }
 @media screen and (min-width: 550px) {  
-  .picMap{
-    grid-template-columns: 1fr 1fr;
-  }
-  .inside #map{
-    height: 100%;
-  }
   .inside #map-container{
     height: 100%;
   }
@@ -377,6 +371,15 @@ input[type="submit"] {
     max-width: 350px;  
   }
   .nameRate {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media screen and (min-width: 810px) {  
+  .inside #map{
+    height: 100%;
+  }
+  .picMap{
     grid-template-columns: 1fr 1fr;
   }
 }

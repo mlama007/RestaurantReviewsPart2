@@ -249,6 +249,7 @@ limitations under the License.
   // TODO: remove this once browsers do the right thing with promises
   ['openCursor', 'openKeyCursor'].forEach(function(funcName) {
     [ObjectStore, Index].forEach(function(Constructor) {
+      if (!(funcName in Constructor.prototype)) return;
       Constructor.prototype[funcName.replace('open', 'iterate')] = function() {
         var args = toArray(arguments);
         var callback = args[args.length - 1];
@@ -289,13 +290,13 @@ limitations under the License.
     open: function(name, version, upgradeCallback) {
       var p = promisifyRequestCall(indexedDB, 'open', [name, version]);
       var request = p.request;
-
-      request.onupgradeneeded = function(event) {
-        if (upgradeCallback) {
-          upgradeCallback(new UpgradeDB(request.result, event.oldVersion, request.transaction));
-        }
-      };
-
+      if (request) {
+        request.onupgradeneeded = function(event) {
+          if (upgradeCallback) {
+            upgradeCallback(new UpgradeDB(request.result, event.oldVersion, request.transaction));
+          }
+        };
+      }
       return p.then(function(db) {
         return new DB(db);
       });
@@ -304,12 +305,11 @@ limitations under the License.
       return promisifyRequestCall(indexedDB, 'deleteDatabase', [name]);
     }
   };
-
   if (typeof module !== 'undefined') {
     module.exports = exp;
+    module.exports.default = module.exports;
   }
   else {
     self.idb = exp;
   }
 }());
-

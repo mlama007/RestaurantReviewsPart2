@@ -81,7 +81,7 @@ window.initMap = () => {
     scrollwheel: false
   });
   updateRestaurants();
-  DBHelper.nextPending();
+  // DBHelper.nextPending();
 }
 
 /**

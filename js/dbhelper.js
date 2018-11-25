@@ -13,10 +13,29 @@ class DBHelper {
     return `http://localhost:${port}/restaurants`;
   }
   
+
+  // Reviews
   static get DATABASE_REVIEWS_URL() {
     const port = 1337; // Change this to your server port
     return `http://localhost:${port}/reviews`;
   }
+  
+  static get DATABASE_REVIEWS_ID_URL() {
+    const port = 1337 // Change this to your server port
+    return `http://localhost:${port}/reviews?restaurant_id=`;
+  }
+
+  // Favorites
+  static get DATABASE_Favorite_URL() {
+    const port = 1337;
+    return `http://localhost:${port}/restaurants/{restaurant_id}/`; // /?is_favorite=true`
+  }
+
+  static get DATABASE_NOT_Favorite_URL() {
+    const port = 1337;
+    return `http://localhost:${port}/restaurants/{restaurant_id}/`; // ?is_favorite=false`
+  }
+
 
   /**
    * Fetch all restaurants.
@@ -72,11 +91,13 @@ class DBHelper {
         })
   }//end of fetchRestaurants
   
+  
+  
   // GET
   // http://localhost:1337/reviews/?restaurant_id=<restaurant_id>
   static fetchRestaurantReviewsById(id, callback) {
     // Fetch all reviews for the specific restaurant
-    const fetchURL = DBHelper.DATABASE_REVIEWS_URL + "/?restaurant_id=" + id;
+    const fetchURL = DBHelper.DATABASE_REVIEWS_ID_URL + id;
     fetch(fetchURL, {method: "GET"}).then(response => {
       if (!response.clone().ok && !response.clone().redirected) {
         throw "No reviews available";
@@ -232,6 +253,8 @@ class DBHelper {
     return marker;
   } 
 
+
+  //////////////////////////
   static addPendingRequestToQueue(url, method, body) {
     // Open the database ad add the request details to the pending table
     const dbPromise = idb.open("TheRestaurantDepot");
@@ -336,7 +359,7 @@ class DBHelper {
   }
 
   static updateCachedRestaurantData(id, updateObj) {
-		const dbPromise = idb.open("TheRestaurantDepot");
+        const dbPromise = idb.open("TheRestaurantDepot");
     // Update in the data for all restaurants first
     dbPromise.then(db => {
       console.log("Getting db transaction");
@@ -458,49 +481,51 @@ static updateCachedRestaurantReview(id, bodyObj) {
       callback(null, result);
     })
   }
+  //////////////////////////
+  
   static submitReview(data) {
-		console.log(data);
-		return fetch(`${DBHelper.DATABASE_REVIEWS_URL}`, {
-			body: JSON.stringify(data), 
-			cache: 'no-cache',
-			credentials: 'same-origin',
-			headers: {
-				'content-type': 'application/json'
-			},
-			method: 'POST',
-			mode: 'cors',
-			redirect: 'follow',
-			referrer: 'no-referrer',
-		})
-		.then(response => {
-			response.json()
-				.then(data => {
+        console.log(data);
+        return fetch(`${DBHelper.DATABASE_REVIEWS_URL}`, {
+            body: JSON.stringify(data), 
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'content-type': 'application/json'
+            },
+            method: 'POST',
+            mode: 'cors',
+            redirect: 'follow',
+            referrer: 'no-referrer',
+        })
+        .then(response => {
+            response.json()
+                .then(data => {
           const dbPromise = idb.open("TheRestaurantDepot");
-					dbPromise.then(db => {
-						if (!db) return;
-						const tx = db.transaction('all-reviews', 'readwrite');
-						const store = tx.objectStore('all-reviews');
-						store.put(data);
+                    dbPromise.then(db => {
+                        if (!db) return;
+                        const tx = db.transaction('all-reviews', 'readwrite');
+                        const store = tx.objectStore('all-reviews');
+                        store.put(data);
           });
           console.log(data);
-					return data;
+                    return data;
         })
-		})
-		.catch(error => {
-			data['updatedAt'] = new Date().getTime();
-			console.log(data);
+        })
+        .catch(error => {
+            data['updatedAt'] = new Date().getTime();
+            console.log(data);
       const dbPromise = idb.open("TheRestaurantDepot");
-			this.dbPromise.then(db => {
-				if (!db) return;
-				// Put fetched reviews into IDB
-				const tx = db.transaction('offline-reviews', 'readwrite');
-				const store = tx.objectStore('offline-reviews');
-				store.put(data);
-				console.log('Review stored offline in IDB');
-			});
-			return;
-		});
-	}
+            this.dbPromise.then(db => {
+                if (!db) return;
+                // Put fetched reviews into IDB
+                const tx = db.transaction('offline-reviews', 'readwrite');
+                const store = tx.objectStore('offline-reviews');
+                store.put(data);
+                console.log('Review stored offline in IDB');
+            });
+            return;
+        });
+    }
 
   // Doug Brown [Project Coach] [2 hours ago]
   // Everything should then flow to the callback for displaying reviews after that
@@ -582,27 +607,27 @@ static updateCachedRestaurantReview(id, bodyObj) {
 
   // favorite
   static toggleFavorite(restaurant, isFavorite) {
-		fetch(`${DBHelper.DATABASE_URL}/${restaurant.id}/?is_favorite=${isFavorite}`, {
-			method: 'PUT'
-		})
-		.then(response => {
-			return response.json();
-		})
-		.then(data => {
+        fetch(`${DBHelper.DATABASE_URL}/${restaurant.id}/?is_favorite=${isFavorite}`, {
+            method: 'PUT'
+        })
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
       const dbPromise = idb.open("TheRestaurantDepot");
-			DBHelper.dbPromise.then(db => {
-				if (!db) return;
-				const tx = db.transaction('all-restaurants', 'readwrite');
-				const store = tx.objectStore('all-restaurants');
-				store.put(data)
-			});
-			return data;
-		})
-		.catch(error => {
+            DBHelper.dbPromise.then(db => {
+                if (!db) return;
+                const tx = db.transaction('all-restaurants', 'readwrite');
+                const store = tx.objectStore('all-restaurants');
+                store.put(data)
+            });
+            return data;
+        })
+        .catch(error => {
       restaurant.is_favorite = isFavorite;
       console.log(error);
-				return;
-		});
+                return;
+        });
   }
   
   static toggleRestaurantFavoriteStatus(id, setFavorite, callback) {
