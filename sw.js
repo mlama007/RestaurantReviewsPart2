@@ -28,12 +28,12 @@ const files = [
   'js/restaurant_info.js',
   'js/idb.js'
 ]
-let staticCacheName = 'Version_1';
+let staticCacheName = 'Version_2';
 
 // caching
 self.addEventListener('install', function(event) {
   event.waitUntil(
-    caches.open('Version_1').then(function(cache) {
+    caches.open(staticCacheName).then(function(cache) {
       return cache.addAll(files);
     })
   );
@@ -138,11 +138,11 @@ self.addEventListener('sync', function (event) {
 	}
 });
 
-if (navigator.serviceWorker) {
-  navigator.serviceWorker.register('sw.js')
-    .then(registration => {
-      console.log(`Registration successful, scope is ${registration.scope}`);
-    }).catch(error => {
-      console.log(`Service worker registration failed, error: ${error}`);
-    });
-}
+// if (navigator.serviceWorker) {
+//   navigator.serviceWorker.register('sw.js')
+//     .then(registration => {
+//       console.log(`Registration successful, scope is ${registration.scope}`);
+//     }).catch(error => {
+//       console.log(`Service worker registration failed, error: ${error}`);
+//     });
+// }
