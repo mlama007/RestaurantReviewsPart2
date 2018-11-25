@@ -533,7 +533,7 @@ static updateCachedRestaurantReview(id, bodyObj) {
    * This is the Prototype for any function needing to access the reviews url
     */
   static fetchReviews(callback) {
-    const reviewsUrl = DBHelper.DATABASE_REVIEWS_ID_URL;
+    const reviewsUrl = DBHelper.DATABASE_REVIEWS_URL;
     if (reviewsUrl.length === 0) {
       console.log('There are no reviews here');
       return;
