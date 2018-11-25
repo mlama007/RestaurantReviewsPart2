@@ -1,6 +1,7 @@
 /**
  * Common database helper functions.
  */
+
 class DBHelper {
 
   /**
@@ -16,6 +17,7 @@ class DBHelper {
     const port = 1337; // Change this to your server port
     return `http://localhost:${port}/reviews`;
   }
+
   /**
    * Fetch all restaurants.
    */
@@ -31,12 +33,23 @@ class DBHelper {
       })
       .then(
         function addData(data) {
-          const dbPromise = idb.open(
-            'TheRestaurantDepot', 1, function (upgradeDb) {
-              upgradeDb.createObjectStore('RestaurantStore', {
-                keyPath: 'id'
-              });
-            }); //End of opening database
+
+          const dbPromise = idb.open("TheRestaurantDepot", 1, upgradeDB => {
+            switch (upgradeDB.oldVersion) {
+              case 0:
+                upgradeDB.createObjectStore("RestaurantStore", {keyPath: "id"});
+              case 1:
+                upgradeDB.createObjectStore("pending", {
+                  keyPath: "id",
+                  autoIncrement: true
+                });
+                case 2:
+                // {
+                //   const reviewsStore = upgradeDB.createObjectStore("ReviewsStore", {keyPath: "id"});
+                //   reviewsStore.createIndex("restaurant_id", "restaurant_id");
+                // }
+            }
+          });//End of opening database
           dbPromise.then(
             function (db) {//put the data into the db
               var tx = db.transaction('RestaurantStore', 'readwrite');
@@ -221,7 +234,7 @@ class DBHelper {
 
   static addPendingRequestToQueue(url, method, body) {
     // Open the database ad add the request details to the pending table
-    const dbPromise = idb.open("fm-udacity-restaurant");
+    const dbPromise = idb.open("TheRestaurantDepot");
     dbPromise.then(db => {
       const tx = db.transaction("pending", "readwrite");
       tx
@@ -237,17 +250,8 @@ class DBHelper {
       .catch(error => {})
       .then(DBHelper.nextPending());
   }
-  static updateFavorite(id, newState, callback) {
-    // Push the request into the waiting queue in IDB
-    const url = `${DBHelper.DATABASE_URL}/${id}/?is_favorite=${newState}`;
-    const method = "PUT";
-    DBHelper.updateCachedRestaurantData(id, {"is_favorite": newState});
-    DBHelper.addPendingRequestToQueue(url, method);
+  
 
-    // Update the favorite data on the selected ID in the cached data
-
-    callback(null, {id, value: newState});
-  }
   static saveNewReview(id, bodyObj, callback) {
     // Push the request into the waiting queue in IDB
     const url = `${DBHelper.DATABASE_REVIEWS_URL}`;
@@ -266,7 +270,7 @@ class DBHelper {
     let url;
     let method;
     let body;
-    const dbPromise = idb.open("fm-udacity-restaurant");
+    const dbPromise = idb.open("TheRestaurantDepot");
     dbPromise.then(db => {
       if (!db.objectStoreNames.length) {
         console.log("DB not available");
@@ -332,13 +336,13 @@ class DBHelper {
   }
 
   static updateCachedRestaurantData(id, updateObj) {
-    const dbPromise = idb.open("fm-udacity-restaurant");
+		const dbPromise = idb.open("TheRestaurantDepot");
     // Update in the data for all restaurants first
     dbPromise.then(db => {
       console.log("Getting db transaction");
-      const tx = db.transaction("restaurants", "readwrite");
+      const tx = db.transaction("RestaurantStore", "readwrite");
       const value = tx
-        .objectStore("restaurants")
+        .objectStore("RestaurantStore")
         .get("-1")
         .then(value => {
           if (!value) {
@@ -428,24 +432,6 @@ static updateCachedRestaurantReview(id, bodyObj) {
     DBHelper.addPendingRequestToQueue(url, method, bodyObj);
     callback(null, null);
   }
-
-  static handleFavoriteClick(id, newState) {
-    // Block any more clicks on this until the callback
-    const fav = document.getElementById("favorite-icon-" + id);
-    fav.onclick = null;
-
-    DBHelper.updateFavorite(id, newState, (error, resultObj) => {
-      if (error) {
-        console.log("Error updating favorite");
-        return;
-      }
-      // Update the button background for the specified favorite
-      const favorite = document.getElementById("favorite-icon-" + resultObj.id);
-      favorite.style.background = resultObj.value
-        ? `url("/icons/002-like.svg") no-repeat`
-        : `url("icons/001-like-1.svg") no-repeat`;
-    });
-  }
   
   /**
    * Add reviews
@@ -474,7 +460,6 @@ static updateCachedRestaurantReview(id, bodyObj) {
   }
   static submitReview(data) {
 		console.log(data);
-		
 		return fetch(`${DBHelper.DATABASE_REVIEWS_URL}`, {
 			body: JSON.stringify(data), 
 			cache: 'no-cache',
@@ -490,7 +475,8 @@ static updateCachedRestaurantReview(id, bodyObj) {
 		.then(response => {
 			response.json()
 				.then(data => {
-					this.dbPromise.then(db => {
+          const dbPromise = idb.open("TheRestaurantDepot");
+					dbPromise.then(db => {
 						if (!db) return;
 						const tx = db.transaction('all-reviews', 'readwrite');
 						const store = tx.objectStore('all-reviews');
@@ -503,7 +489,7 @@ static updateCachedRestaurantReview(id, bodyObj) {
 		.catch(error => {
 			data['updatedAt'] = new Date().getTime();
 			console.log(data);
-			
+      const dbPromise = idb.open("TheRestaurantDepot");
 			this.dbPromise.then(db => {
 				if (!db) return;
 				// Put fetched reviews into IDB
@@ -513,29 +499,6 @@ static updateCachedRestaurantReview(id, bodyObj) {
 				console.log('Review stored offline in IDB');
 			});
 			return;
-		});
-	}
-
-  static toggleFavorite(restaurant, isFavorite) {
-		fetch(`${DBHelper.DATABASE_URL}/${restaurant.id}/?is_favorite=${isFavorite}`, {
-			method: 'PUT'
-		})
-		.then(response => {
-			return response.json();
-		})
-		.then(data => {
-			DBHelper.dbPromise.then(db => {
-				if (!db) return;
-				const tx = db.transaction('all-restaurants', 'readwrite');
-				const store = tx.objectStore('all-restaurants');
-				store.put(data)
-			});
-			return data;
-		})
-		.catch(error => {
-      restaurant.is_favorite = isFavorite;
-      console.log(error);
-				return;
 		});
 	}
 
@@ -616,4 +579,53 @@ static updateCachedRestaurantReview(id, bodyObj) {
 
 
 
+
+  // favorite
+  static toggleFavorite(restaurant, isFavorite) {
+		fetch(`${DBHelper.DATABASE_URL}/${restaurant.id}/?is_favorite=${isFavorite}`, {
+			method: 'PUT'
+		})
+		.then(response => {
+			return response.json();
+		})
+		.then(data => {
+      const dbPromise = idb.open("TheRestaurantDepot");
+			DBHelper.dbPromise.then(db => {
+				if (!db) return;
+				const tx = db.transaction('all-restaurants', 'readwrite');
+				const store = tx.objectStore('all-restaurants');
+				store.put(data)
+			});
+			return data;
+		})
+		.catch(error => {
+      restaurant.is_favorite = isFavorite;
+      console.log(error);
+				return;
+		});
+  }
+  
+  static toggleRestaurantFavoriteStatus(id, setFavorite, callback) {
+    let url;
+
+    if (setFavorite) {
+      url = `${DBHelper.DATABASE_URL}/${id}/?is_favorite=true`;
+    }
+    else {
+      url = `${DBHelper.DATABASE_URL}/${id}/?is_favorite=false`;
+    }
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('put', url);
+    xhr.send(JSON.stringify({is_favorite: setFavorite}));
+    xhr.onload = function(event) {
+      if (event.target.response && event.target.status === 200) {
+        return callback(JSON.parse(event.target.response).is_favorite);
+      }
+      throw new Error('Response not okay status');
+    };
+    xhr.onerror = function(event) {
+      console.log('[error] toggle restaurant favorite status failed', event.target.response);
+    }
+  }
 }

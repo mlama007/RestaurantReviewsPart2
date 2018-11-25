@@ -207,19 +207,31 @@ nav h1 a {
   width: 100%;
   z-index: 1000;
 }
-.inside #maincontent{
-  display: grid;
-  grid-template-rows: 2;
-  grid-template-columns: 2;
-}
 
 #restaurant-container{
   justify-content: center;
 }
 
+.picMap{
+  display: grid;
+  grid-template-columns: 1fr;
+  margin: auto;
+}
+
 .inside #map {
   background-color: #ccc;
-  width: 100%;
+  height: 30vh;
+  width: 85vw;
+  max-width: 400px;
+}
+.inside #map-container{
+  height: 30vh;
+  width: 85vw;
+  max-width: 400px;
+}
+#restaurant-img {
+  width: 85vw;
+  max-width: 400px;
 }
 .inside #footer {
   bottom: 0;
@@ -235,9 +247,6 @@ nav h1 a {
   text-transform: uppercase;
   line-height: 1.1;
 }
-#restaurant-img {
-	width: 90%;
-}
 #restaurant-address {
   font-size: 12pt;
   margin: 10px 0px;
@@ -252,7 +261,6 @@ nav h1 a {
   padding: 2px 0;
   text-align: center;
   text-transform: uppercase;
-	width: 90%;
 }
 
 #reviews-container h2 {
@@ -311,21 +319,14 @@ input[type="submit"] {
 
 
 /* FAVORITE */
-#restauranHeader{
+.favoriteButton {
+  border: none;
+  width: 3em;
+}
+.restauranHeader{
   display: grid;
   grid-template-columns: 10fr 2fr;
-}
-.favoriteDiv{
-  text-align: center;
-}
-.hiddenelement{
-  visibility: hidden;
-}
-#reviewsNew li {
-  list-style: none;
-}
-.favorite-icon button{
-  border: none;
+  margin: 1em auto;
 }
 
 /* reviews */
@@ -336,10 +337,14 @@ input[type="submit"] {
   margin: 1em;
   padding: .5em;
 }
+#reviewsNew {
+  list-style: none;
+}
 
 /* ====================== Media Quaries ====================== */
 
 @media screen and (min-width: 500px) {  
+  
   .filter-options h2 {
     grid-column: span 2;
   }
@@ -348,10 +353,13 @@ input[type="submit"] {
   }
 }
 @media screen and (min-width: 550px) {  
-  .inside #maincontent{
-    grid-template-columns: 50% 50%;
-  }  
-  .inside #map {
+  .picMap{
+    grid-template-columns: 1fr 1fr;
+  }
+  .inside #map{
+    height: 100%;
+  }
+  .inside #map-container{
     height: 100%;
   }
   .nameRate {

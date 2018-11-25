@@ -146,43 +146,46 @@ createRestaurantHTML = (restaurant) => {
   image.alt = restaurant.name + "restaurant image";
   li.append(image);
 
+  const restauranHeader = document.createElement('div');
+  restauranHeader.classList.add('restauranHeader');
   // Name
   const name = document.createElement('h2');
   name.innerHTML = restaurant.name;
-  li.append(name);
+  restauranHeader.append(name);
 
   // Favorites
-  const isFavorite = (restaurant["is_favorite"] && restaurant["is_favorite"].toString() === "true") ? true : false;
-  const favoriteDiv = document.createElement("div");
-  favoriteDiv.className = "favorite-icon";
-  const favorite = document.createElement("button");
-  favorite.style.background = isFavorite
-    ? `url("/img/icons/like.svg") no-repeat`
-    : `url("/img/icons/dislike.svg") no-repeat`;
-  favorite.innerHTML = isFavorite
-    ? "<span class='hiddenelement'>></span> <strong>Favorite</strong> - View Details to edit"
-    : "<span class='hiddenelement'>></span> <strong>Not Favorite</strong> - View Details to edit";
-  favorite.id = "favorite-icon-" + restaurant.id;
-  // favorite.onclick = event => handleFavoriteClick(restaurant.id, !isFavorite);
-  favoriteDiv.append(favorite);
-  li.append(favoriteDiv);
+  const favoriteButton = document.createElement("button");
+  favoriteButton.classList.add('favoriteButton');
+  favoriteButton.id= 'restaurantButton'+restaurant.id;
+  if (restaurant.is_favorite) {
+    favoriteButton.style.background = `url("/img/icons/like.svg") no-repeat`;
+    favoriteButton.dataset.isFavorite = true;
+    favoriteButton.title = 'Restaurant is favorite';
+  }
+  else if (!restaurant.is_favorite){
+    favoriteButton.style.background = `url("/img/icons/dislike.svg") no-repeat`;
+    favoriteButton.dataset.isFavorite = false;
+    favoriteButton.title = 'Make Restaurant favorite';
+  }
+  restauranHeader.append(favoriteButton);
 
+  li.append(restauranHeader);
 
-  // const favoriteDiv = document.createElement("div");
-  // favoriteDiv.classList.add('favoriteDiv');
-  // favoriteDiv.innerHTML = '<label for="favCheck'+ restaurant.id +'"> Add to favorite:</label><input type="checkbox" id="favCheck'+ restaurant.id + '">'
-  // li.append(favoriteDiv);
-
-  // const favCheck = document.getElementById('favCheck' + restaurant.id );
-  // favCheck.checked = restaurant.is_favorite;
-  // if (favCheck.checked) {
-  //   favCheck.style.background = `url("/img/icons/like.svg") no-repeat`
-  // } else {
-  //   favCheck.style.background = `url("/img/icons/dislike.svg") no-repeat`;
-  // }
-	// favCheck.addEventListener('change', event => {
-	// 	DBHelper.toggleFavorite(restaurant, event.target.checked);
-  // });
+  favoriteButton.onclick = (event, id = restaurant.id, setFavorite = !JSON.parse(favoriteButton.dataset.isFavorite)) => {
+      
+    DBHelper.toggleRestaurantFavoriteStatus(id, setFavorite, favoriteStatus => {
+      event.target.dataset.isFavorite = favoriteStatus;
+      if (favoriteStatus === "true") {
+        favoriteButton.style.background = `url("/img/icons/like.svg") no-repeat`;
+        favoriteButton.title = 'Restaurant is favorite';
+      }
+      else {
+        favoriteButton.style.background = `url("/img/icons/dislike.svg") no-repeat`;
+        favoriteButton.title = 'Make Restaurant favorite';
+      }
+    });
+  };
+  // end favorite
 
   // neighborhood
   const neighborhood = document.createElement('p');
@@ -204,19 +207,6 @@ createRestaurantHTML = (restaurant) => {
 
   return li
 }
-
-const handleFavoriteClick = (id, newState) => {
-  // Update properties of the restaurant data object
-  const favorite = document.getElementById("favorite-icon-" + id);
-  const restaurant = self
-    .restaurants
-    .filter(r => r.id === id)[0];
-  if (!restaurant)
-    return;
-  restaurant["is_favorite"] = newState;
-  // favorite.onclick = event => handleFavoriteClick(restaurant.id, !restaurant["is_favorite"]);
-  DBHelper.handleFavoriteClick(id, newState);
-};
 
 /**
  * Add markers for current restaurants to the map.

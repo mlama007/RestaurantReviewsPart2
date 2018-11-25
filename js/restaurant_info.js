@@ -55,23 +55,6 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   const name = document.getElementById('restaurant-name');
   name.innerHTML = restaurant.name;
 
-  const restauranHeader = document.getElementById("restauranHeader");
-  const favoriteDiv = document.createElement("div");
-  favoriteDiv.classList.add('favoriteDiv');
-  favoriteDiv.innerHTML = '<label for="favCheck"> Add to favorite:</label><input type="checkbox" id="favCheck">'
-  restauranHeader.append(favoriteDiv);
-
-  const favCheck = document.getElementById('favCheck');
-  favCheck.checked ? restaurant.is_favorite : !restaurant.is_favorite
-  // if (favCheck.checked) {
-  //   favCheck.style.background = `url("/img/icons/like.svg") no-repeat`
-  // } else {
-  //   favCheck.style.background = `url("/img/icons/dislike.svg") no-repeat`;
-  // }
-	favCheck.addEventListener('change', event => {
-		DBHelper.toggleFavorite(restaurant, event.target.checked);
-  });
-
   const address = document.getElementById('restaurant-address');
   address.innerHTML = restaurant.address;
 

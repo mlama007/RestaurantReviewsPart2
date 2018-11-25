@@ -35,7 +35,13 @@
         <div id="restauranHeader">
           <h2 tabindex="0" id="restaurant-name"></h2>
         </div>
-        <img id="restaurant-img">
+        <div class="picMap">
+          <img id="restaurant-img">
+          <!-- Beginning map -->
+          <section tabindex="0" aria-label="Google Map" id="map-container">
+            <div role="application" id="map"></div>
+          </section>
+        </div>
         <p id="restaurant-cuisine"></p>
         <p tabindex="0" id="restaurant-address"></p>
         <table tabindex="0" id="restaurant-hours"></table>
@@ -74,10 +80,6 @@
             </form>
         </div>
       </section>
-    </section>
-    <!-- Beginning map -->
-    <section tabindex="0" aria-label="Google Map" id="map-container">
-      <div role="application" id="map"></div>
     </section>
 
   </main>
