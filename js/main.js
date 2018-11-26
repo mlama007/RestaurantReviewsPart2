@@ -157,12 +157,13 @@ createRestaurantHTML = (restaurant) => {
   const favoriteButton = document.createElement("button");
   favoriteButton.classList.add('favoriteButton');
   favoriteButton.id= 'restaurantButton'+restaurant.id;
-  if (restaurant.is_favorite) {
+  console.log(restaurant.is_favorite)
+  if (restaurant.is_favorite === "true") {
     favoriteButton.style.background = `url("/img/icons/like.svg") no-repeat`;
     favoriteButton.dataset.isFavorite = true;
     favoriteButton.title = 'Restaurant is favorite';
   }
-  else if (!restaurant.is_favorite){
+  else if (restaurant.is_favorite === "false"){
     favoriteButton.style.background = `url("/img/icons/dislike.svg") no-repeat`;
     favoriteButton.dataset.isFavorite = false;
     favoriteButton.title = 'Make Restaurant favorite';

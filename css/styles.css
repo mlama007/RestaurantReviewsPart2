@@ -262,6 +262,10 @@ nav h1 a {
   text-align: center;
   text-transform: uppercase;
 }
+p#restaurant-address,
+table#restaurant-hours {
+  margin: auto;
+}
 
 #reviews-container h2 {
   color: #663600;
