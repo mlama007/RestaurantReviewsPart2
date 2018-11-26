@@ -1,5 +1,6 @@
 const files = [
   '/',
+  'index.html',
   'restaurant.html',
   // CSS
   'css/styles.css',
@@ -26,7 +27,8 @@ const files = [
   'js/dbhelper.js',
   'js/main.js',
   'js/restaurant_info.js',
-  'js/idb.js'
+  'js/idb.js',
+  'js/lazysizes.min.js'
 ]
 let staticCacheName = 'Version_2';
 
@@ -138,11 +140,3 @@ self.addEventListener('sync', function (event) {
 	}
 });
 
-if (navigator.serviceWorker) {
-  navigator.serviceWorker.register('sw.js')
-    .then(registration => {
-      console.log(`Registration successful, scope is ${registration.scope}`);
-    }).catch(error => {
-      console.log(`Service worker registration failed, error: ${error}`);
-    });
-}

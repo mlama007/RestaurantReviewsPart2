@@ -459,10 +459,12 @@ static updateCachedRestaurantReview(id, bodyObj) {
   /**
    * Add reviews
    */
+  // NOT USED
   static saveReview(id, name, rating, comment, callback) {
+    console.log("YEEYEEEE")
     // Block any more clicks on the submit button until the callback
     const btn = document.getElementById("review-add-btn");
-    btn.onclick = null;
+    btn.onclick = location.reload();
 
     // Create the POST body
     const body = {
@@ -508,7 +510,9 @@ static updateCachedRestaurantReview(id, bodyObj) {
                         store.put(data);
           });
           console.log(data);
-                    return data;
+          console.log("YEEYEEEE")
+          DBHelper.saveReview(data);
+          return data;
         })
         })
         .catch(error => {
