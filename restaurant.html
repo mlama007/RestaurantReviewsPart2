@@ -36,9 +36,9 @@
           <h2 tabindex="0" id="restaurant-name"></h2>
         </div>
         <div class="picMap">
-            <img id="restaurant-img">
+            <img class="lazyload" id="restaurant-img">
             <!-- Beginning map -->
-           <section tabindex="0" aria-label="Google Map" id="map-container">
+           <section class="lazyload" tabindex="0" aria-label="Google Map" id="map-container">
              <div role="application" id="map"></div>
            </section>
         </div>
@@ -94,6 +94,7 @@
   <script type="application/javascript" charset="utf-8" src="js/dbhelper.js"></script>
   <script type="application/javascript" charset="utf-8" src="js/idb.js"></script>
   <script type="application/javascript" charset="utf-8" src="./sw.js"></script>
+  <script src="/js/lazysizes.min.js" async=""></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDb6Ea35UOu4hSZjPZ7H5MJBoZaJIFTLmQ&libraries=geometry&v=3&callback=initMap"></script>
 
 </body>

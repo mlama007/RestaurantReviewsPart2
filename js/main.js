@@ -4,11 +4,6 @@ let restaurants,
 var map
 var markers = []
 
-
-
-
-
-
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
@@ -146,8 +141,8 @@ createRestaurantHTML = (restaurant) => {
 
   // Images
   const image = document.createElement('img');
-  image.className = 'restaurant-img';
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.className = 'restaurant-img lazyload';
+  image.setAttribute('data-src', DBHelper.imageUrlForRestaurant(restaurant));
   image.alt = restaurant.name + "restaurant image";
   li.append(image);
 
@@ -162,7 +157,6 @@ createRestaurantHTML = (restaurant) => {
   const favoriteButton = document.createElement("button");
   favoriteButton.classList.add('favoriteButton');
   favoriteButton.id= 'restaurantButton'+restaurant.id;
-  console.log(restaurant.is_favorite)
   if (restaurant.is_favorite === "true") {
     favoriteButton.style.background = `url("/img/icons/like.svg") no-repeat`;
     favoriteButton.dataset.isFavorite = true;
@@ -239,4 +233,5 @@ if ('serviceWorker' in navigator) {
     }
   )
 }
+
 
