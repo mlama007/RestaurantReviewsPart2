@@ -465,6 +465,7 @@ static updateCachedRestaurantReview(id, bodyObj) {
     // Block any more clicks on the submit button until the callback
     const btn = document.getElementById("review-add-btn");
     btn.onclick = location.reload();
+    
 
     // Create the POST body
     const body = {
@@ -500,20 +501,19 @@ static updateCachedRestaurantReview(id, bodyObj) {
             referrer: 'no-referrer',
         })
         .then(response => {
-            response.json()
-                .then(data => {
-          const dbPromise = idb.open("TheRestaurantDepot");
-                    dbPromise.then(db => {
-                        if (!db) return;
-                        const tx = db.transaction('all-reviews', 'readwrite');
-                        const store = tx.objectStore('all-reviews');
-                        store.put(data);
-          });
-          console.log(data);
-          console.log("YEEYEEEE")
-          DBHelper.saveReview(data);
-          return data;
-        })
+          response.json()
+          .then(data => {
+            const dbPromise = idb.open("TheRestaurantDepot");
+            dbPromise.then(db => {
+              if (!db) return;
+              const tx = db.transaction('all-reviews', 'readwrite');
+              const store = tx.objectStore('all-reviews');
+              store.put(data);
+            });
+            console.log(data);
+            DBHelper.saveReview(data);
+            return data;
+          })
         })
         .catch(error => {
             data['updatedAt'] = new Date().getTime();
